@@ -58,21 +58,20 @@ func extractPodBandwidthResources(podAnnotations map[string]string) (int64, int6
 	return ingress, egress, nil
 }
 
-func (pr *PodRequest) cmdAdd() *PodResult {
+func (pr *PodRequest) cmdAdd() (*PodResult, error) {
 	namespace := pr.PodNamespace
 	podName := pr.PodName
 	if namespace == "" || podName == "" {
 		logrus.Errorf("required CNI variable missing")
-		return nil
+		return nil, fmt.Errorf("required CNI variable missing")
 	}
 
 	clientset, err := util.NewClientset(&config.Kubernetes)
 	if err != nil {
 		logrus.Errorf("Could not create clientset for kubernetes: %v", err)
-		return nil
+		return nil, fmt.Errorf("Could not create clientset for kubernetes: %v", err)
 	}
 	kubecli := &kube.Kube{KClient: clientset}
-
 	// Get the IP address and MAC address from the API server.
 	// Exponential back off ~32 seconds + 7* t(api call)
 	var annotationBackoff = wait.Backoff{Duration: 1 * time.Second, Steps: 7, Factor: 1.5, Jitter: 0.1}
@@ -90,20 +89,20 @@ func (pr *PodRequest) cmdAdd() *PodResult {
 		return false, nil
 	}); err != nil {
 		logrus.Errorf("failed to get pod annotation - %v", err)
-		return nil
+		return nil, fmt.Errorf("failed to get pod annotation - %v", err)
 	}
 
 	ovnAnnotation, ok := annotation["ovn"]
 	if !ok {
 		logrus.Errorf("failed to get ovn annotation from pod")
-		return nil
+		return nil, fmt.Errorf("failed to get ovn annotation from pod")
 	}
 
 	var ovnAnnotatedMap map[string]string
 	err = json.Unmarshal([]byte(ovnAnnotation), &ovnAnnotatedMap)
 	if err != nil {
 		logrus.Errorf("unmarshal ovn annotation failed")
-		return nil
+		return nil, nil
 	}
 
 	ipAddress := ovnAnnotatedMap["ip_address"]
@@ -112,27 +111,27 @@ func (pr *PodRequest) cmdAdd() *PodResult {
 
 	if ipAddress == "" || macAddress == "" || gatewayIP == "" {
 		logrus.Errorf("failed in pod annotation key extract")
-		return nil
+		return nil, nil
 	}
 
 	ingress, egress, err := extractPodBandwidthResources(annotation)
 	if err != nil {
 		logrus.Errorf("failed to parse bandwidth request: %v", err)
-		return nil
+		return nil, nil
 	}
 
 	var interfacesArray []*current.Interface
 	interfacesArray, err = pr.ConfigureInterface(namespace, podName, macAddress, ipAddress, gatewayIP, config.Default.MTU, ingress, egress)
 	if err != nil {
 		logrus.Errorf("Failed to configure interface in pod: %v", err)
-		return nil
+		return nil, nil
 	}
 
 	// Build the result structure to pass back to the runtime
 	addr, addrNet, err := net.ParseCIDR(ipAddress)
 	if err != nil {
 		logrus.Errorf("failed to parse IP address %q: %v", ipAddress, err)
-		return nil
+		return nil, nil
 	}
 	ipVersion := "6"
 	if addr.To4() != nil {
@@ -153,15 +152,15 @@ func (pr *PodRequest) cmdAdd() *PodResult {
 	podResult := &PodResult{}
 	//versionedResult, _ := result.GetAsVersion(pr.CNIConf.CNIVersion)
 	podResult.Response, _ = json.Marshal(result)
-	return podResult
+	return podResult, nil
 }
 
-func (pr *PodRequest) cmdDel() *PodResult {
+func (pr *PodRequest) cmdDel() (*PodResult, error) {
 	err := pr.PlatformSpecificCleanup()
 	if err != nil {
 		logrus.Errorf("Teardown error: %v", err)
 	}
-	return &PodResult{}
+	return &PodResult{}, err
 }
 
 // HandleCNIRequest is the callback for all the requests
@@ -171,15 +170,16 @@ func (pr *PodRequest) cmdDel() *PodResult {
 func HandleCNIRequest(request *PodRequest) ([]byte, error) {
 	logrus.Infof("Dispatching pod network request %v", request)
 	var result *PodResult
+	var err error
 	switch request.Command {
 	case CNIAdd:
-		result = request.cmdAdd()
+		result, err = request.cmdAdd()
 	case CNIDel:
-		result = request.cmdDel()
+		result, err = request.cmdDel()
 	default:
 	}
-	if result == nil {
-		return PodResult{}.Response, fmt.Errorf("Nil response to CNI request")
+	if err != nil {
+		return PodResult{}.Response, err
 	}
 	logrus.Infof("Returning pod network request %v, result %s err %v", request, string(result.Response), result.Err)
 	return result.Response, result.Err

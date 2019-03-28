@@ -6,17 +6,17 @@ import (
 	"io/ioutil"
 	"os"
 	"path/filepath"
-
-	"github.com/containernetworking/cni/pkg/types"
+	"github.com/openvswitch/ovn-kubernetes/go-controller/pkg/types"
 )
 
 // WriteCNIConfig writes a CNI JSON config file to directory given by global config
 func WriteCNIConfig() error {
-	bytes, err := json.Marshal(&types.NetConf{
-		CNIVersion: "0.3.1",
-		Name:       "ovn-kubernetes",
-		Type:       CNI.Plugin,
-	})
+	// These are promoted fileds in go and can't be assigned in the previous way
+	netConf := &types.NetConf{}
+	netConf.CNIVersion = "0.3.1"
+	netConf.Name = "ovn-kubernetes"
+	netConf.Type = CNI.Plugin
+	bytes, err := json.Marshal(netConf)
 	if err != nil {
 		return fmt.Errorf("failed to marshal CNI config JSON: %v", err)
 	}
