@@ -1,0 +1,1006 @@
+  307  vi pkg/cni/cni.go +127
+  308  git diff 
+  309  vi pkg/cni/cni.go
+  310  vi pkg/cni/utils.go 
+  311  vi pkg/cni/cni.go
+  312  make
+  313  vi pkg/cni/cni.go +135
+  314  make
+  315  vi pkg/cni/utils.go +9
+  316  make
+  317  vi pkg/cni/utils.go +12
+  318  make
+  319  vi pkg/cni/utils.go +12
+  320  make
+  321  grep -Rn GetAnnotationOnPod
+  322  grep -Rn GetAnnotation
+  323  vi pkg/cni/utils.go +12
+  324  make
+  325  grep -Rn SetAnnotation
+  326  vi pkg/ovn/pods.go +338
+  327  grep -Rn addLogicalPort
+  328  vi pkg/ovn/ovn.go +326
+  329  vi pkg/ovn/pods.go +338
+  330  grep -Rn SetAnnotation
+  331  vi pkg/kube/kube.go +21 
+  332  vi pkg/kube/kube.go +43
+  333  grep -Rn kapi.Pod
+  334  vi pkg/ovn/policy.go +435
+  335  grep -Rn addLogicalPort
+  336  vi pkg/ovn/ovn.go +333
+  337  vi pkg/cni/utils.go +12
+  338  vi pkg/kube/kube.go 
+  339  make
+  340  vi pkg/kube/kube.go +22
+  341  make
+  342  vi pkg/kube/kube.go +22
+  343  make
+  344  vi pkg/kube/kube.go +56
+  345  make
+  346  vi pkg/kube/kube.go +56
+  347  vi pkg/kube/kube.go +60
+  348  vi pkg/kube/kube.go +61
+  349  make
+  350  vi pkg/kube/kube.go +56
+  351  make
+  352  vi pkg/kube/kube.go +56
+  353  make
+  354  vi pkg/kube/kube.go +56
+  355  make
+  356  vi pkg/kube/kube.go +56
+  357  make
+  358  git diff pkg/kube/kube.go
+  359  vi pkg/kube/kube.go +56
+  360  make
+  361  vi pkg/kube/kube.go +56
+  362  make
+  363  vi pkg/cni/utils.go +32
+  364  make
+  365  vi pkg/cni/utils.go +32
+  366  make
+  367  grep -Rn wait
+  368  vi pkg/cni/utils.go +32
+  369  ls -l
+  370  cd pkg/
+  371  grep -Rn wait
+  372  vi pkg/cni/utils.go
+  373  vi cni/utils.go
+  374  cd ../
+  375  make
+  376  git diff 
+  377  git status
+  378  git checkout pkg/cni/helper_linux.go
+  379  vi pkg/cni/helper_linux.go 
+  380  make
+  381  vi pkg/cni/cnishim.go +113
+  382  make
+  383  vi pkg/cni/cnishim.go +113
+  384  vi pkg/cni/cni.go 
+  385  vi pkg/cni/helper_linux.go 
+  386  vi pkg/cni/cni.go 
+  387  vi pkg/cni/cnishim.go +113
+  388  vi pkg/cni/cni.go 
+  389  vi pkg/cni/helper_linux.go 
+  390  vi pkg/cni/cni.go 
+  391  vi pkg/cni/cnishim.go +113
+  392  vi pkg/cni/cni.go 
+  393  vi pkg/cni/helper_linux.go 
+  394  vi pkg/cni/cnishim.go +113
+  395  vi pkg/cni/helper_linux.go 
+  396  vi pkg/cni/cnishim.go +113
+  397  make
+  398  vi pkg/cni/cnishim.go +116
+  399  make
+  400  vi pkg/cni/cnishim.go +135
+  401  vi pkg/cni/helper_linux.go 
+  402  vi pkg/cni/cnishim.go +135
+  403  make
+  404  vi pkg/cni/cnishim.go +109
+  405  make
+  406  vi pkg/cni/cnishim.go +119
+  407  make
+  408  vi pkg/cni/cnishim.go +125
+  409  make
+  410  vi pkg/cni/helper_linux.go 
+  411  vi pkg/cni/cnishim.go +125
+  412  make
+  413  vi pkg/cni/cnishim.go +137
+  414  make
+  415  vi pkg/cni/cnishim.go +138
+  416  make
+  417  vi pkg/cni/cnishim.go +143
+  418  make
+  419  vi pkg/cni/helper_linux.go 
+  420  vi pkg/cni/cnishim.go +1
+  421  make
+  422  grep -Rn PodAnnotation
+  423  vi pkg/util/util.go 
+  424  make
+  425  vi pkg/util/util.go +148
+  426  vi pkg/cni/cnishim.go +148
+  427  make
+  428  vi pkg/cni/cnishim.go +157
+  429  grep -Rn PodInterfaceInfo
+  430  vi pkg/cni/cni.go +71
+  431  vi pkg/cni/cnishim.go +157
+  432  make
+  433  vi pkg/cni/cnishim.go +152
+  434  make
+  435  ls -l
+  436  vi Makefile 
+  437  cat Makefile 
+  438  vi cmd/ovn-k8s-cni-overlay/ovn-k8s-cni-overlay.go 
+  439  ls -l
+  440  cd ~
+  441  git clone https://github.com/containernetworking/cni.git
+  442  cd cni/
+  443  ls -l
+  444  cd libcni/
+  445  ls -l
+  446  go build
+  447  cd ../
+  448  got build
+  449  go build
+  450  ls -l
+  451  vi test.sh 
+  452  cd cnitool/
+  453  ls -l
+  454  go build
+  455  vi README.md 
+  456  cd ~
+  457  mkdir -p go/src
+  458  cd go/st
+  459  cd go/src/
+  460  go get github.com/containernetworking/cni
+  461  go install github.com/containernetworking/cni/cnitool
+  462  ls -l
+  463  cd github.com/containernetworking/cni/cnitool/
+  464  ls -l
+  465  vi README.md 
+  466  go build github.com/containernetworking/cni/cnitool
+  467  ls- l
+  468  ls -l
+  469  ./cnitool --help
+  470  ls -l/etc/cni/net.d/
+  471  #ls -l/etc/cni/net.d/
+  472  vi  /etc/openvswitch/ovn_k8s.conf
+  473  mkdir -p /etc/openvswitch/
+  474  vi  /etc/openvswitch/ovn_k8s.conf
+  475  ls -l /root/kube-cert/
+  476  vi  /etc/openvswitch/
+  477  ls -l /root/kube-cert/server-ca-config.json 
+  478  cat  /root/kube-cert/server-ca-confi
+  479    export KUBECONFIG=/root/kube-cert/admin.kubeconfig
+  480  cd ~
+  481  cd kube
+  482  cd kubernetes/
+  483  cluster/kubectl.sh
+  484  cluster/kubectl.sh get tokens
+  485  cluster/kubectl.sh get token
+  486  cluster/kubectl.sh list
+  487  cluster/kubectl.sh get
+  488  cluster/kubectl.sh api-resources
+  489  cluster/kubectl.sh get secrets
+  490  cluster/kubectl.sh show  secrets default-token-8bqjx
+  491  cluster/kubectl.sh describe  secrets default-token-8bqjx
+  492  vi /etc/openvswitch/ovn_k8s.conf 
+  493  #cd /etc/cni/net.d/
+  494  vi /etc/hosts
+  495  #vi /etc/networks 3
+  496  cd ~
+  497  cd ovn-kubernetes/go-controller/
+  498  vi Makefile 
+  499  make install
+  500  make
+  501  cd ~
+  502  vi /boot/config-3.10.0-1062.el7.x86_64 
+  503  cd kubernetes/
+  504  ls -l
+  505  source ../test_env_master 
+  506  cd hack/
+  507  vi ./local-up-cluster.sh 
+  508  ./local-up-cluster.sh 
+  509  ls- l
+  510  ls -l
+  511  vi prepare-k8s.sh 
+  512  vi /etc/cni/net.d/99-macvlan.conf
+  513  vi /etc/cni/net.d/ovn.conf
+  514  #vi /etc/cni/net.d/
+  515  vi prepare-k8s.sh 
+  516  vi /etc/openvswitch/ovn_k8s.conf 
+  517  vi prepare-k8s.sh 
+  518  vi /etc/cni/net.d/ovn.conf
+  519  cd cni/cnitool/
+  520  ls -l
+  521  cd ~
+  522  rm -rf cni/
+  523  cd go/src/github.com/containernetworking/
+  524  ls -l
+  525  cd cni/
+  526  ls -l
+  527  cd cnitool/
+  528  ./cnitool 
+  529  ./cnitool
+  530  ip netns add blue
+  531  #ls -l
+  532  #/usr/bin/yum install nslooup
+  533  ip netns
+  534  ip netns del blue
+  535  sudo ip netns add testing
+  536  sudo CNI_PATH=./bin cnitool add myptp /var/run/netns/testing
+  537  sudo ./cnitool add myptp /var/run/netns/testing
+  538  vi /etc/openvswitch/ovn_k8s.conf 
+  539  sudo ./cnitool add myptp /var/run/netns/testing
+  540  vi /etc/openvswitch/ovn_k8s.conf 
+  541  #vi /var/log/openlmi-install.log 
+  542  vi /etc/cni/net.d/ovn.conf 
+  543  sudo ./cnitool add myptp /var/run/netns/testing
+  544  vi /etc/cni/net.d/ovn.conf 
+  545  vi /root/prepare-k8s.sh 
+  546  vi /etc/cni/net.d/ovn.conf 
+  547  sudo ./cnitool add myptp /var/run/netns/testing
+  548  vi /etc/cni/net.d/ovn.conf 
+  549  sudo ./cnitool add myptp /var/run/netns/testing
+  550  vi /etc/cni/net.d/ovn.conf 
+  551  sudo ./cnitool add myptp /var/run/netns/testing
+  552  vi /etc/cni/net.d/ovn.conf 
+  553  sudo ./cnitool add ovn-kubernetes /var/run/netns/testing
+  554  ls -l /var/run/netns/testing
+  555  sudo ./cnitool add ovn-kubernetes /var/run/netns/testing
+  556  grep -Rn ../ "no paths provided
+  557  grep -Rn ../ "no paths provided"
+  558  cd ../
+  559  grep -Rn "no paths provided"
+  560  vi pkg/invoke/find.go +30
+  561  vi pkg/invoke/find_test.go +84
+  562  mv  /etc/cni/net.d/ovn.conf  /etc/cni/net.d/10-ovn.conf
+  563  sudo ./cnitool add ovn-kubernetes /var/run/netns/testing
+  564  cd cnitool/
+  565  sudo ./cnitool add ovn-kubernetes /var/run/netns/testing
+  566  #sudo CNI_PATH=./cnitool add ovn-kubernetes /var/run/netns/testing
+  567  vi /etc/openvswitch/ovn_k8s.conf 
+  568  locate ovn-k8s-cni-overlay
+  569  sudo CNI_PATH=/root/ovn-kubernetes/go-controller/cmd/ ./cnitool add ovn-kubernetes /var/run/netns/testing
+  570  #ls -l /root/ovn-kubernetes/go-controller/
+  571  updatedb
+  572  locate ovn-k8s-cni-overlay
+  573  sudo CNI_PATH=/root/ovn-kubernetes/go-controller/_output/go/bin/ ./cnitool add ovn-kubernetes /var/run/netns/testing
+  574  ip netns
+  575  ip netns delete testing
+  576  cd ~
+  577  wget https://raw.githubusercontent.com/quobyte/kubernetes/master/deploy/example-pod.yaml
+  578  #wget https://raw.githubusercontent.com/quobyte/kubernetes/master/deploy/example-pod.yaml
+  579  kubelet get nodes
+  580  kubelet get node
+  581  kubectl get nodes
+  582  kubectl describe localhost
+  583  kubectl describe node localhost
+  584  kubectl get nodes
+  585  kubectl describe node localhost
+  586  rpm -qa | grep docker
+  587  kubectl describe node localhost
+  588  kubectl get nodes
+  589  wget https://raw.githubusercontent.com/quobyte/kubernetes/master/deploy/example-pod.yaml
+  590  #vi https://raw.githubusercontent.com/quobyte/kubernetes/master/deploy/example-pod.yaml
+  591  vi example-pod.yaml
+  592  kubelet create -f example-pod.yaml
+  593  kubectl create -f example-pod.yaml
+  594  #wget https://raw.githubusercontent.com/quobyte/kubernetes/master/deploy/example-pod.yaml
+  595  kubelet get pods
+  596  kubectl get pods
+  597  vi /tmp/kubelet.log 
+  598  kubectl delete  pod example
+  599  kubectl create -f example-pod.yaml
+  600  kubelet describe pod exmpale
+  601  kubectl describe pod example
+  602  #kubectl create -f example-pod.yaml
+  603  kubectl get pods
+  604  kubectl delete exmple
+  605  kubectl delete example
+  606  kubectl delete pod example
+  607  kubectl create -f example-pod.yaml
+  608  kubectl describe pod example
+  609  vi /tmp/kubelet.log 
+  610  #vi /var/log/openlmi-install.log 
+  611  vi /tmp/kubelet.log 
+  612  vi /tmp/kube-apiserver
+  613  vi /tmp/kube-apiserver.log 
+  614  kubectl create -f example-pod.yaml
+  615  kubectl delete pod example
+  616  kubectl create -f example-pod.yaml
+  617  vi /tmp/kubelet.log 
+  618  kubectl describe pod example
+  619  kubectl delete pod example
+  620  kubectl create -f example-pod.yaml
+  621  kubectl describe pod example
+  622  kubectl delete pod example
+  623  kubectl create -f example-pod.yaml
+  624  kubectl describe pod example
+  625  vi /tmp/kubelet.log 
+  626  kubectl delete pod example
+  627  kubectl create -f example-pod.yaml
+  628  kubectl describe pod example
+  629  kubectl delete pod example
+  630  #kubectl delete pod example
+  631  yum search ovn
+  632  wget https://cbs.centos.org/kojifiles/packages/openvswitch/2.11.0/3.el7/x86_64/openvswitch-ovn-central-2.11.0-3.el7.x86_64.rpm
+  633  wget https://cbs.centos.org/kojifiles/packages/openvswitch/2.11.0/3.el7/x86_64/openvswitch-2.11.0-3.el7.x86_64.rpm
+  634  wget https://cbs.centos.org/kojifiles/packages/openvswitch/2.11.0/3.el7/x86_64/openvswitch-ovn-common-2.11.0-3.el7.x86_64.rpm
+  635  wget https://cbs.centos.org/kojifiles/packages/openvswitch/2.11.0/3.el7/x86_64/openvswitch-ovn-host-2.11.0-3.el7.x86_64.rpm
+  636  wget https://cbs.centos.org/kojifiles/packages/openvswitch/2.11.0/3.el7/x86_64/openvswitch-ovn-vtep-2.11.0-3.el7.x86_64.rpm
+  637  yum install ./openvswitch-*
+  638  systemctl enable ovn-controller.service 
+  639  systemctl status  ovn-controller.service 
+  640  systemctl start  ovn-controller.service 
+  641  systemctl status  ovn-controller.service 
+  642  systemctl stop  ovn-controller.service 
+  643  systemctl disable  ovn-controller.service 
+  644  systemctl enable ovn-northd.service 
+  645  systemctl start  ovn-northd.service 
+  646  systemctl status   ovn-northd.service 
+  647  nstat sudo netstat -ltup 
+  648  netstat -ltup 
+  649  netstat -ltup | grep 6642
+  650  netstat -ltup | grep 6641
+  651  #cat /etc/resolv.conf 
+  652  systemctl restart ovn-northd.service
+  653  netstat -ltup | grep 6641
+  654  ps -ef | grep ovn
+  655  vi /var/log/openvswitch/ovsdb-server-nb.log 
+  656  vi /var/log/openvswitch/ovsdb-server-sb.log 
+  657  vi /etc/openvswitch/default.conf 
+  658  vi /etc/openvswitch/system-id.conf 
+  659  vi /etc/openvswitch/default.conf 
+  660  systemctl status   ovn-northd.service 
+  661  vi /usr/lib/systemd/system/ovn-northd.service 
+  662  vi /etc/sysconfig/ovn-northd
+  663  vi /etc/sysconfig/openvswitch 
+  664  #vi /etc/sysconfig/openvswitch 
+  665  #systemctl status   ovn-northd.service 
+  666  locate ovn-northd
+  667  updatedb
+  668  locate ovn-northd
+  669  vi /var/log/openvswitch/ovn-northd.log 
+  670  vi /var/log/openvswitch/ovsdb-server-nb.log 
+  671  #systemctl status   ovn-northd.service 
+  672  ovs-vsctl show 
+  673  ovn-sbctl list chassis
+  674  vi test_env_master 
+  675  source . test_env_master 
+  676  source test_env_master 
+  677  cd ovn-kubernetes/
+  678  ls -l
+  679  grep -Rn 
+  680  grep -Rn "error parsing configuration"
+  681  cd go-controller/
+  682  ls -l
+  683  vi pkg/cni/cnishim.go 
+  684  vi pkg/cni/utils.go 
+  685  make
+  686  vi pkg/cni/utils.go 
+  687  vi pkg/kube/kube.go 
+  688  vi pkg/cni/utils.go 
+  689  vi pkg/kube/kube.go 
+  690  vi pkg/cni/
+  691  vi pkg/cni/cnishim.go 
+  692  make
+  693  vi pkg/cni/utils.go 
+  694  make
+  695  vi pkg/cni/utils.go 
+  696  vi pkg/cni/cnishim.go 
+  697  make
+  698  vi pkg/cni/cnishim.go +113
+  699  make
+  700  vi pkg/cni/cnishim.go +113
+  701  make
+  702  vi pkg/cni/cnishim.go +113
+  703  make
+  704  vi pkg/cni/cnishim.go +113
+  705  vi pkg/cni/utils.go 
+  706  make
+  707  vi pkg/cni/utils.go 
+  708  vi pkg/cni/cnishim.go 
+  709  make
+  710  vi pkg/cni/utils.go 
+  711  make install
+  712  rm /usr/bin/ovnkube 
+  713  rm /usr/bin/ovn-kube-util 
+  714  vi Makefile 
+  715  make install
+  716  vi pkg/cn
+  717  vi pkg/kube/kube.go 
+  718  vi pkg/cni/utils.go 
+  719  vi pkg/cni/cnishim.go 
+  720  grep -Rn K8
+  721  vi pkg/cni/cnishim.go 
+  722  vi pkg/cni/cniserver.go 
+  723  vi pkg/cni/cnishim.go 
+  724  vi pkg/cni/cniserver.go 
+  725  vi pkg/cni/cnishim.go 
+  726  vi pkg/cni/cniserver.go 
+  727  vi pkg/cni/cnishim.go 
+  728  make
+  729  vi pkg/cni/cnishim.go 
+  730  vi pkg/cni/cniserver.go 
+  731  vi pkg/cni/cnishim.go 
+  732  vi pkg/cni/cniserver.go 
+  733  vi pkg/cni/cnishim.go 
+  734  vi pkg/cni/cniserver.go 
+  735  vi pkg/cni/cnishim.go 
+  736  make
+  737  vi pkg/cni/cnishim.go +112
+  738  make
+  739  vi pkg/cni/cnishim.go +138
+  740  vi pkg/cni/cnishim.go vi pkg/cni/cniserver.go +111
+  741  vi pkg/cni/cniserver.go +111
+  742  grep -Rn PodNamespace
+  743  vi pkg/cni/types.go +59
+  744  vi pkg/cni/cnishim.go 
+  745  make
+  746  vi pkg/cni/types.go +59
+  747  vi pkg/cni/cnishim.go +146
+  748  make
+  749  make install
+  750  vi pkg/cni/cnishim.go +146
+  751  vi pkg/cni/cnishim.go
+  752  grep -Rn ReadCNIConfig
+  753  vi pkg/config/cni.go +54
+  754  vi pkg/cni/cniserver.go 
+  755  grep -Rn ReadCNIConfig
+  756  vi pkg/cni/cnishim.go +103
+  757  make
+  758  mak install
+  759  make install
+  760  vi pkg/cni/cnishim.go +103
+  761  grep -Rn cniRequestToPodRequest
+  762  vi pkg/cni/cniserver.go +138
+  763  vi pkg/cni/cnishim.go +103
+  764  make
+  765  make install
+  766  vi pkg/cni/cniserver.go +138
+  767  vi pkg/cni/utils.go 
+  768  make
+  769  make install
+  770  vi pkg/cni/cniserver.go
+  771  vi pkg/cni/cnishim.go 
+  772  vi /tmp/kubelet.log 
+  773  vi pkg/cni/cnishim.go 
+  774  vi pkg/cni/utils.go 
+  775  yum search ovn
+  776  vi /etc/yum.repos.d/CentOS-Base.repo 
+  777  yum search openvsw
+  778  vi /etc/yum.repos.d/CentOS-Base.repo 
+  779  yum search net
+  780  yum search openvswitch
+  781  vi /var/log/openvswitch/ovn-northd.log 
+  782  ps -ef | grep ovn
+  783  systemctl status iptables
+  784  systemctl status 
+  785  iptables-save 
+  786  systemctl status iptables
+  787  cat /etc/redhat-release 
+  788  systemctl status 
+  789  vi /etc/openvswitch/default.conf 
+  790  ifconfig 
+  791  tcpdump -i eno1
+  792  tcpdump -i eno1 -p 6641
+  793  tcpdump -i eno1 port  6641
+  794  tcpdump -i eno1 port  6642
+  795  ovn-nbctl set-connection ptcp:6641
+  796  ovn-sbctl set-connection ptcp:6642
+  797  ls -l
+  798  ps -ef | grep go
+  799  vi prepare-k8s.sh 
+  800  wget https://packages.cloud.google.com/yum/doc/yum-key.gpg
+  801  vi /etc/yum.repos.d/kubernets.repo
+  802  cp /etc/yum.repos.d/docker-ce.repo /etc/yum.repos.d/kubernetes.repo
+  803  vi /etc/yum.repos.d/kubernetes.repo 
+  804  yum install kubeadm
+  805  yum install m                                                                                                                                                              |  18 kB  00:00:00     
+  806  #(7/9): libnetfilter_queue-1.0.2-2.el7_2.x86_64.rpm     
+  807  yum install kubectl
+  808  kubeadm init --apiserver-advertise-address={{ hostvars[groups['kube-master'][0]].ansible_host }} --skip-phases addon/kube-proxy --pod-network-cidr 192.168.0.0/16 --service-cidr 10.90.0.0/16
+  809        args:
+  810          chdir: $HOME
+  811      - name: create .kube directory
+  812        become: yes
+  813        become_user: root
+  814        file:
+  815          path: $HOME/.kube
+  816          state: directory
+  817          mode: 0755
+  818      - name: copy admin.conf to user's kube config
+      copy:
+        src: /etc/kubernetes/admin.conf
+        dest: /root/.kube/config
+        remote_src: yes
+        owner: root
+
+  819  ifconfig 
+  820  kubeadm init --apiserver-advertise-address=10.212.0.220 --skip-phases addon/kube-proxy --pod-network-cidr 192.168.0.0/16 --service-cidr 10.90.0.0/16
+  821  sysctl -A | grep bridge-nf-call-iptables
+  822  vi /etc/sysctl.conf 
+  823  sysctl -P
+  824  sysctl -p
+  825  kubeadm init --apiserver-advertise-address=10.212.0.220 --skip-phases addon/kube-proxy --pod-network-cidr 192.168.0.0/16 --service-cidr 10.90.0.0/16
+  826  sysctl -A | grep ip_foward
+  827  sysctl -A | grep ip_forward
+  828  vi /etc/sysctl.conf 
+  829  sysctl -A 
+  830  sysctl -p
+  831  sysctl -A | grep ip_forward
+  832  kubeadm init --apiserver-advertise-address=10.212.0.220 --skip-phases addon/kube-proxy --pod-network-cidr 192.168.0.0/16 --service-cidr 10.90.0.0/16
+  833  swapoff -a
+  834  kubeadm init --apiserver-advertise-address=10.212.0.220 --skip-phases addon/kube-proxy --pod-network-cidr 192.168.0.0/16 --service-cidr 10.90.0.0/16
+  835  kubelet get nodes
+  836  kubelet get node
+  837  kubectl get node
+  838  kubectl --help
+  839  kubectl config
+  840  kubectl config view
+  841    mkdir -p $HOME/.kube
+  842    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  843    sudo chown $(id -u):$(id -g) $HOME/.kube/config
+  844  kubectl get node
+  845  vi .kube/config 
+  846  kubectl get node
+  847  vi .kube/config 
+  848  kubectl config view
+  849  kubectl get node
+  850  kubectl git view
+  851  kubectl 
+  852  kubectl config
+  853  kubectl configview
+  854  kubectl config view
+  855  kubectl config
+  856  kubectl config get-clusters
+  857  kubectl config use-context
+  858  cat .kube/config 
+  859  kubectl config get-clusters
+  860  kubectl config get-constext
+  861  kubectl config 
+  862  kubectl config set context kubernetes
+  863  kubectl config get-contexts
+  864  kubectl config set context local-up-cluster
+  865  kubectl get node
+  866  vi /etc/hosts
+  867  kadmin --help
+  868  #kubectl config get-clusters
+  869  kubeadm --help
+  870  kubeadm revert
+  871  kubeadm reset
+  872  kubectl -n kube-system get cm kubeadm-config -oyaml
+  873  ps -ef | grep go
+  874  ps -ef | grep kuber
+  875  kill 20401
+  876  kill 212282
+  877  ps -ef | grep kuber
+  878  kill 21168
+  879* ps -ef 
+  880  ps -ef | grep kuber
+  881  kill 2632
+  882  ps -ef | grep kuber
+  883  kill 3351
+  884  systemctl stop kubelet.service 
+  885  systemctl status 
+  886  systemctl stop kubepods
+  887  systemctl stop kube-apiserver
+  888  systemctl status 
+  889  docker ps
+  890  systemctl status 
+  891  export KUBECONFIG=/etc/kubernetes/admin.conf
+  892  kubectl get node
+  893  kubectl drain <node name> --delete-local-data --force --ignore-daemonsets
+  894  kubectl drain localhost.localdomain --delete-local-data --force --ignore-daemonsets
+  895  kubectl delete node localhost.localdomain
+  896  kubeadm reset
+  897  ps -ef | grep kub
+  898  kubeadm reset
+  899  ps -ef | grep kub
+  900  #kubectl -n kube-system get cm kubeadm-config -oyaml
+  901  #kubeadm init --apiserver-advertise-address=10.212.0.220 --skip-phases addon/kube-proxy --pod-network-cidr 192.168.0.0/16 --service-cidr 10.90.0.0/16
+  902  kubeadm init --help
+  903  ##kubeadm init --apiserver-advertise-address=10.212.0.220 --node-name=master0 --skip-phases addon/kube-proxy --pod-network-cidr 192.168.0.0/16 --service-cidr 10.90.0.0/16
+  904  vi /etc/hosts
+  905  kubeadm init --apiserver-advertise-address=10.212.0.220 --node-name=master0 --skip-phases addon/kube-proxy --pod-network-cidr 192.168.0.0/16 --service-cidr 10.90.0.0/16
+  906    mkdir -p $HOME/.kube
+  907    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  908  source $HOME/.kube/config
+  909  $HOME/.kube/config
+  910  source export KUBECONFIG=/etc/kubernetes/admin.conf
+  911  export KUBECONFIG=/etc/kubernetes/admin.conf
+  912  kubectl get nodes
+  913  kubectl describe  nodes
+  914  ps -ef | grep kublet
+  915  ps -ef | grep kubet
+  916  ps -ef | grep kuelet
+  917  ps -ef | grep kubelet
+  918  systemctl stop kubelet
+  919  kubectl get nodes
+  920  kubectl delete node master0
+  921  kubeadm reset
+  922  kubeadm init --apiserver-advertise-address=10.212.0.220 --node-name=master0 --skip-phases addon/kube-proxy,kubelet --pod-network-cidr 192.168.0.0/16 --service-cidr 10.90.0.0/16
+  923  kubeadm init --apiserver-advertise-address=10.212.0.220 --node-name=master0 --skip-phases addon/kube-proxy,addon/kubelet --pod-network-cidr 192.168.0.0/16 --service-cidr 10.90.0.0/16
+  924  sudo kubeadm init phase control-plane --help
+  925  kubeadm init --apiserver-advertise-address=10.212.0.220 --node-name=master0 --skip-phases addon/kube-proxy,kubelet-start --pod-network-cidr 192.168.0.0/16 --service-cidr 10.90.0.0/16
+  926  kubeadm init --apiserver-advertise-address=10.212.0.220 --node-name=master0 --skip-phases addon/kube-proxy,kubelet-start --service-cidr 10.90.0.0/16
+  927  kubeadm reset
+  928  kubeadm init --apiserver-advertise-address=10.212.0.220 --node-name=master0 --skip-phases addon/kube-proxy,kubelet-start --service-cidr 10.90.0.0/16
+  929  kubeadm reset
+  930  systemctl kubelet stauts
+  931  systemctl status kubelet
+  932  #kubeadm init --apiserver-advertise-address=10.212.0.220 --node-name=master0 --skip-phases addon/kube-proxy,kubelet-start --pod-network-cidr 192.168.0.0/16 --service-cidr 10.90.0.0/16
+  933  sudo kubeadm init phase control-plane --help
+  934  sudo kubeadm init phase control-plane controller-manager --help
+  935  #sudo kubeadm init phase control-plane controller-manager --help
+  936  kubectl get cs
+  937  kubeadm init --apiserver-advertise-address=10.212.0.220 --node-name=master0 --skip-phases addon/kube-proxy --pod-network-cidr 192.168.0.0/16 --service-cidr 10.90.0.0/16
+  938    mkdir -p $HOME/.kube
+  939    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+  940  kubectl get cs
+  941  ps -ef | grep kublet
+  942  ps -ef | grep kubelet
+  943  kubectl get nodes
+  944  systemctl status kubelet
+  945  systemctl stop  kubelet
+  946  kubectl get nodes
+  947  kubectl show  nodes
+  948  kubectl describe  nodes
+  949  kubeadm --help
+  950  kubeadm join --help
+  951  kubeadm reset
+  952  ps -ef | grep kuber
+  953  #kubeadm init --apiserver-advertise-address=10.212.0.220 --node-name=master0 --skip-phases addon/kube-proxy --pod-network-cidr 192.168.0.0/16 --service-cidr 10.90.0.0/16
+  954  kubeadm init --node-name=master0 --skip-phases addon/kube-proxy --pod-network-cidr 192.168.0.0/16 --service-cidr 10.90.0.0/16
+  955  ps -ef | grep kube
+  956  ps -ef | grep kubete
+  957  ps -ef | grep kubelet
+  958  kubectl get nodes
+  959  #kubeadm init --node-name=master0 --skip-phases addon/kube-proxy --pod-network-cidr 192.168.0.0/16 --service-cidr 10.90.0.0/16
+  960  kubeadm reset
+  961  kubeadm init
+  962  export KUBECONFIG=/etc/kubernetes/admin.conf
+  963  kubectl get nodes
+  964  ps -ef | grep kube
+  965  #kubeadm init --node-name=master0 --skip-phases addon/kube-proxy,kubelet-start
+  966  kubeadm init --node-name=master0 --skip-phases addon/kube-proxy,kubelet-start
+  967  kubeadm reset
+  968  kubeadm init --node-name=master0 --skip-phases addon/kube-proxy,kubelet-start
+  969  kubeadm init --node-name=master0 --skip-phases addon/kube-proxy,kubelet-start,wait-control-plane
+  970  kubeadm reset
+  971  kubeadm init --node-name=master0 --skip-phases addon/kube-proxy,kubelet-start,wait-control-plane
+  972  kubectl get nodes
+  973  kubeadm reset
+  974  kubeadm init phase control-plane
+  975* kubeadm init 
+  976  #cluster/kubectl.sh api-resources
+  977  kubeadm reset
+  978  docker pull shaharklein/ovn-kube-u
+  979  docker image
+  980  docker image ls
+  981  docker export 14190e7ad551
+  982  docker image save 14190e7ad551
+  983  docker -o image save 14190e7ad551
+  984  docker image save 14190e7ad551
+  985  docker image save 
+  986  docker image save 14190e7ad551 -o test.tag.gz
+  987  ls -l
+  988  mv test.tag.gz test.tar
+  989  tar -xf test.tar 
+  990  ls -l
+  991  cd fbc76eabe7b3a313be1b4cce61d428d63d8e05b91a7372e8c1e33cea42f1caca/
+  992  ls -l
+  993  cd ~
+  994  cd 04cfc5ec3771564a96871947aecef0eb1d2e524167ccddee0846a1ce5c87af0a
+  995  ls -l
+  996  cd ~
+  997  grep -Rn ovnkube.sh
+  998  find -ovnkube.sh .
+  999  find -name ovnkube.sh .
+ 1000  history | less
+ 1001  cat /proc/cmdline 
+ 1002  history | less
+ 1003  vi prepare-k8s.sh
+ 1004  history | less
+ 1005  cat /etc/yum.repos.d/kubernetes.repo 
+ 1006  vi /etc/yum.repos.d/kubernetes.repo 
+ 1007  history | less
+ 1008  cat /etc/sysctl.conf 
+ 1009  history | less
+ 1010  #kubeadm init --node-name=master0 --skip-phases addon/kube-proxy,kubelet-start,wait-control-plane
+ 1011  kubeadm init --apiserver-advertise-address=10.212.0.220 --node-name=master0 --skip-phases addon/kube-proxy --pod-network-cidr 192.168.0.0/16 --service-cidr 10.90.0.0/1
+ 1012  kubeadm init --apiserver-advertise-address=10.212.0.220 --node-name=master0 --skip-phases addon/kube-proxy --pod-network-cidr 192.168.0.0/16 --service-cidr 10.90.0.0/16
+ 1013    mkdir -p $HOME/.kube
+ 1014    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+ 1015  y
+ 1016    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+ 1017  export KUBECONFIG=/etc/kubernetes/admin.conf
+ 1018  kubectl get nodes
+ 1019  kubectl describe nodes master0
+ 1020  #systemctl status kubelet
+ 1021  #kubectl describe nodes master0
+ 1022  ps -ef | kube
+ 1023  ps -ef | grep kube
+ 1024  #kubeadm reset
+ 1025  kubectl drain <node name> --delete-local-data --force --ignore-daemonsets
+ 1026  kubectl drain master0 --delete-local-data --force --ignore-daemonsets
+ 1027  kubectl delete node master0]
+ 1028  kubectl delete node master0
+ 1029  kubeadm reset
+ 1030  ps -ef | grep kube
+ 1031  ls -l
+ 1032  find 
+ 1033  find ovnkub.sh
+ 1034  find . ovnkub.sh
+ 1035  find . -name ovnkub.sh
+ 1036  find . -name ovnkube.sh
+ 1037  vi ./ovn-kubernetes/dist/images/ovnkube.sh 
+ 1038  pwd
+ 1039  ls -l
+ 1040  rm -rf test.tar
+ 1041  rm -rf 04cfc5ec3771564a96871947aecef0eb1d2e524167ccddee0846a1ce5c87af0a/
+ 1042  rm -rf f*
+ 1043  rm -rf d779e31cfae2bbf05ce2069562c40f03e2fac3410c490e96290b73d80b5acf98/
+ 1044  rm -rf bd0ea64095c0a9d0d8881cdb58a0dea9394b89dcd0c48d61d32395aebd2b6182/
+ 1045  ls -l
+ 1046  rm -rf 1*
+ 1047  ls -l
+ 1048  rm -rf 2*
+ 1049  ls -l
+ 1050  rm -rf 508c26d5c377f113e3c4200e9e6bfea0f016943cda4aca0dab42987ac1e5b610/
+ 1051  rm -rf 6*
+ 1052  ls -l
+ 1053  rm -rf 7*
+ 1054  ls -l
+ 1055  rm -rf 8aed6ecc88cdfb06d330781ae5627b6fb16a43de1ba64927a3113ec3101b35d0/
+ 1056  rm -rf 9*
+ 1057  rm -rf c*
+ 1058  ls -l
+ 1059  #kubectl drain master0 --delete-local-data --force --ignore-daemonsets
+ 1060  locate ovnkube.sh
+ 1061  /root/ovn-kubernetes/dist/images/ovnkube.sh --help
+ 1062  vi /root/ovn-kubernetes/dist/images/ovnkube.sh 
+ 1063  cd /root/ovn-kubernetes/dist/
+ 1064  ls -l
+ 1065  cd images/
+ 1066  ls -l
+ 1067  vi Dockerfile
+ 1068  ls -l
+ 1069  vi kubernetes.repo 
+ 1070  yum intall ovn
+ 1071  yum install ovn
+ 1072  yum search ovn
+ 1073  yum install ovn-central
+ 1074  yum install openvswitch-ovn-central
+ 1075  yum install openvswitch-ovn-central.x86_64
+ 1076  rpm -qa | grep ovn
+ 1077  yum remove openvswitch 
+ 1078  cd ~
+ 1079  ls -l
+ 1080  cd ovn-kubernetes/
+ 1081  ls -l
+ 1082  cd dist/images/
+ 1083  ls -l
+ 1084  vi Makefile 
+ 1085  ./ovnkube.sh --help
+ 1086  ./ovnkube.sh display_env
+ 1087  ./ovnkube.sh ovn-controller
+ 1088  ./ovnkube.sh ovn-master
+ 1089  vi ./ovnkube.sh 
+ 1090  cd ~
+ 1091  wget https://raw.githubusercontent.com/shahar-klein/nv-k8s-sriov-deploy/master/ovnkube-master.yaml
+ 1092  ps -ef | grep kub
+ 1093  #source test_env_master 
+ 1094  history 
+ 1095  kubeadm init --apiserver-advertise-address=10.212.0.220 --node-name=master0 --skip-phases addon/kube-proxy --pod-network-cidr 192.168.0.0/16 --service-cidr 10.90.0.0/16
+ 1096  kubectl get nodes
+ 1097  ls -l /etc/cni/net.d/
+ 1098  ls -l
+ 1099  cd ovn-kubernetes/
+ 1100  cd go-controller/
+ 1101  make
+ 1102  make install
+ 1103  cd 
+ 1104  cd ovn-kubernetes/
+ 1105  git status
+ 1106  cd ../
+ 1107  cd .
+ 1108  echo "{\"name\":\"ovn-kubernetes\", \"type\":\"ovn-k8s-cni-overlay\"}" > /etc/cni/net.d/10-ovn-kubernetes.conf
+ 1109  kubectl get nodes
+ 1110  kubeadm reset
+ 1111  kubeadm init --apiserver-advertise-address=10.212.0.220 --node-name=master0 --skip-phases addon/kube-proxy --pod-network-cidr 192.168.0.0/16 --service-cidr 10.90.0.0/16
+ 1112  export KUBECONFIG=/etc/kubernetes/admin.conf
+ 1113  kubectl get nodes
+ 1114  kubectl describe  node master0
+ 1115  systemctl status kubelet
+ 1116  ls -l /etc/cni/net.d/
+ 1117  echo "{\"name\":\"ovn-kubernetes\", \"type\":\"ovn-k8s-cni-overlay\"}" > /etc/cni/net.d/10-ovn-kubernetes.conf
+ 1118  cat /etc/cni/net.d/10-ovn-kubernetes.conf
+ 1119  systemctl restart kubelet
+ 1120  systemctl status  kubelet
+ 1121  kubectl get nodes
+ 1122  cat /etc/cni/net.d/10-ovn-kubernetes.conf
+ 1123  updatedb
+ 1124  locate ovn-k8s-cni-overlay
+ 1125  cat /etc/cni/net.d/10-ovn-kubernetes.conf
+ 1126  locate ovn-k8s-cni-overlay
+ 1127  systemctl restart kubelet
+ 1128  systemctl status  kubelet
+ 1129  locate kubelet.service
+ 1130  vi /usr/lib/systemd/system/kubelet.service
+ 1131  vi /usr/lib/systemd/system/kubelet.service.d/10-kubeadm.conf 
+ 1132  vi /etc/sysconfig/kubelet
+ 1133  vi /etc/sysconfig/kubelet 
+ 1134  vi  /etc/cni/net.d/10-ovn-kubernetes.conf
+ 1135  systemctl restart kubelet
+ 1136  systemctl status  kubelet
+ 1137  kubectl get nodes
+ 1138  vi /var/log/openvswitch/ovn-northd.log
+ 1139  vi /var/log/openvswitch/ovn-controller.log
+ 1140  vi /var/log/openvswitch/ovsdb-server-sb.log
+ 1141  kubectl get nodes
+ 1142  ls -l
+ 1143  #    - name: create .kube directory
+ 1144  kubectl describe pod example
+ 1145  kubectl create -f example-pod.yaml
+ 1146  kubectl get nodes
+ 1147  kubectl get [pods
+ 1148  kubectl get pods
+ 1149  kubectl delete example
+ 1150  kubectl delete pod example
+ 1151  vi example-pod.yaml
+ 1152  kubectl create -f example-pod.yaml
+ 1153  kubectl get pods
+ 1154  kubectl descrbe pod example
+ 1155  kubectl describe pod example
+ 1156  kubectl delete pod example
+ 1157  kubectl describe  node master0
+ 1158  kubectl --help
+ 1159  kubectl taint master0
+ 1160  kubectl taint master0 --help
+ 1161  kubectl uncordon node master0
+ 1162  kubectl uncordon master0
+ 1163  kubectl describe  nodes
+ 1164  kubectl taint node master0 node-role.kubernetes.io/NoSchedule
+ 1165  kubectl taint node master0 node-role.kubernetes.io:NoSchedule
+ 1166  kubectl taint node master0 node-role.kubernetes.io/master:NoSchedule
+ 1167  kubectl taint update node master0 node-role.kubernetes.io/master:NoSchedule
+ 1168  kubectl taint node master0 node-role.kubernetes.io/master:NoSchedule-
+ 1169  kubectl create -f example-pod.yaml
+ 1170  kubectl get pods
+ 1171  kubectl describe pod example
+ 1172  kubectl logs pods  example
+ 1173  kubectl logs example 
+ 1174  kubectl describe pod example
+ 1175  vi /tmp/kubelet.log 
+ 1176  kubectl describe pod example
+ 1177  vi /tmp/kubelet.log 
+ 1178  kubectl describe pod example
+ 1179  ls -l
+ 1180  cat /etc/openvswitch/ovn_k8s.conf 
+ 1181  kubectl get secrets
+ 1182  kubectl describe default-token-sscmz
+ 1183  kubectl describe secrit default-token-sscmz
+ 1184  kubectl describe secrit  default-token-sscmz
+ 1185  kubectl describe secret  default-token-sscmz
+ 1186  vi /etc/openvswitch/ovn_k8s.conf 
+ 1187  kubectl delete pod example
+ 1188  kubectl create -f example-pod.yaml
+ 1189  kubectl describe pod example
+ 1190  kubectl delete pod example
+ 1191  kubectl create -f example-pod.yaml
+ 1192  kubectl describe pod example
+ 1193  kubectl get pods
+ 1194  kubectl describe pod example
+ 1195  kubectl delete pod example
+ 1196  kubectl describe node master0
+ 1197  nslookup master0
+ 1198  vi /etc/openvswitch/ovn_k8s.conf 
+ 1199  kubectl describe node master0
+ 1200  kubectl describe secret  default-token-sscmz
+ 1201  vi /etc/openvswitch/ovn_k8s.conf 
+ 1202  kubectl create -f example-pod.yaml
+ 1203  kubectl describe secret  default-token-sscmz
+ 1204  kubelet describe pod exmpale
+ 1205  kubectl describe pod example
+ 1206  vi /etc/openvswitch/ovn_k8s.conf 
+ 1207  vi /etc/kubernetes/admin.conf 
+ 1208* ls -l /etc/kubernetes/pki/ca.crt 
+ 1209  vi /etc/openvswitch/ovn_k8s.conf 
+ 1210  #kubectl get nodes
+ 1211  kubectl delete pod example
+ 1212  kubectl create -f example-pod.yaml
+ 1213  kubectl describe pod example
+ 1214  cd ovn-kubernetes/
+ 1215  cd go-controller/
+ 1216  ls -l
+ 1217  vi pkg/cni/utils.go 
+ 1218  vi pkg/cni/cnishim.go 
+ 1219  make
+ 1220  make install
+ 1221  ls -l /opt/cni/bin/
+ 1222  kubectl delete pod example
+ 1223  kubectl create -f example-pod.yaml
+ 1224  kubectl create -f /root/example-pod.yaml
+ 1225  kubectl describe pod example
+ 1226  kubectl delete pod example
+ 1227  journalctl -x kubelet
+ 1228  journalctl -u kubelet
+ 1229  journalctl -u kubelet.service 
+ 1230  vi pkg/cni/cnishim.go 
+ 1231  lspci | grep Mell
+ 1232  vi pkg/cni/cnishim.go 
+ 1233  make
+ 1234  vi pkg/cni/cnishim.go +156
+ 1235  make
+ 1236  make install
+ 1237  kubectl delete pod example
+ 1238  kubectl create -f /root/example-pod.yaml
+ 1239  kubectl describe pod example
+ 1240  kubectl create -f /root/example-pod.yaml
+ 1241  kubectl describe pod example
+ 1242  vi pkg/cni/cnishim.go +156
+ 1243  vi pkg/cni/utils.go 
+ 1244  kubectl describe pod example
+ 1245  vi pkg/cni/utils.go 
+ 1246  kubectl describe pod example
+ 1247  journalctl -u kubelet.service 
+ 1248  vi pkg/cni/utils.go 
+ 1249  make
+ 1250  make install 
+ 1251  kubectl delete pod example
+ 1252  journalctl --vacuum-size=30M
+ 1253  kubectl create -f /root/example-pod.yaml
+ 1254  kubectl describe pod example
+ 1255  journalctl -x kubelet
+ 1256  journalctl -x kubelet.service
+ 1257  journalctl -u kubelet.service
+ 1258  export K8S_APISERVER=10.212.0.220
+ 1259  kubectl delete pod example
+ 1260  kubectl create -f /root/example-pod.yaml
+ 1261  kubectl describe pod example
+ 1262  #source ../test_env_master 
+ 1263  journalctl -u kubelet.service
+ 1264  export K8S_APISERVER=10.212.0.220
+ 1265  export | grep K8S
+ 1266  systemctl restart kubelet
+ 1267  kubectl create -f /root/example-pod.yaml
+ 1268  kubectl delete pod example
+ 1269  kubectl create -f /root/example-pod.yaml
+ 1270  kubectl describe pod example
+ 1271  journalctl -u kubelet.service
+ 1272* cat /etc/
+ 1273  vi /etc/openvswitch/default.conf 
+ 1274  vi /etc/openvswitch/ovn_k8s.conf 
+ 1275  vi pkg/cni/utils.go 
+ 1276  make
+ 1277  vi pkg/cni/utils.go 
+ 1278  make
+ 1279  vi pkg/cni/utils.go 
+ 1280  make 
+ 1281  make install
+ 1282  locate ovn-k8s-cni-overlay
+ 1283  ls -l /opt/cni/ovn-k8s-cni-overlay
+ 1284  ls -l /opt/cni/bin/ovn-k8s-cni-overlay
+ 1285  date
+ 1286  systemctl restart kubelet
+ 1287  kubectl delete pod example
+ 1288  kubectl create -f /root/example-pod.yaml
+ 1289  kubectl describe pod example
+ 1290  journalctl -u kubelet.service
+ 1291  !
+ 1292  vi pkg/cni/utils.go 
+ 1293  vi pkg/config/config.go 
+ 1294  ls -l /etc/cni/net.d/10-ovn-kubernetes.conf 
+ 1295  cat /etc/cni/net.d/10-ovn-kubernetes.conf 
+ 1296  vi pkg/config/config.go 
+ 1297  grep -Rn InitConfig
+ 1298  vi cmd/ovnkube/ovnkube.go 
+ 1299  vi pkg/cni/utils.go 
+ 1300  vi cmd/ovnkube/ovnkube.go 
+ 1301  vi pkg/cni/utils.go 
+ 1302  vi pkg/util/kube.go 
+ 1303  vi cmd/ovn-k8s-cni-overlay/ovn-k8s-cni-overlay.go 
+ 1304  vi cmd/ovnkube/ovnkube.go 
+ 1305  vi cmd/ovn-k8s-cni-overlay/ovn-k8s-cni-overlay.go 
+ 1306  history > ledo

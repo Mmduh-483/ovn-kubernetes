@@ -15,9 +15,12 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/Mellanox/sriovnet"
 	"github.com/containernetworking/cni/pkg/skel"
 	"github.com/containernetworking/cni/pkg/types"
 	"github.com/containernetworking/cni/pkg/types/current"
+	"github.com/containernetworking/plugins/pkg/ns"
+	"github.com/vishvananda/netlink"
 
 	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/config"
 )
@@ -103,35 +106,128 @@ func (p *Plugin) CmdAdd(args *skel.CmdArgs) error {
 	}
 
 	req := newCNIRequest(args)
-
-	body, err := p.doCNI("http://dummy/", req)
+        podReq, err := cniRequestToPodRequest(req)
+        if err != nil {
+		return fmt.Errorf("MOSHE!!! cniRequestToPodRequest")
+        }
+	// 1. set smart-nic pod annotation will add PF index and VF index
+	// TODO:check for error
+	SetPodInfoSmartNic(podReq.PodNamespace, podReq.PodName)
 	if err != nil {
-		return err
+                 return err	
 	}
+        
+	//body, err := p.doCNI("http://dummy/", req)
+	//if err != nil {
+	//	return err
+	//}
 
-	response := &Response{}
-	if err = json.Unmarshal(body, response); err != nil {
-		return fmt.Errorf("failed to unmarshal response '%s': %v", string(body), err)
-	}
+	//response := &Response{}
+	//if err = json.Unmarshal(body, response); err != nil {
+	//	return fmt.Errorf("failed to unmarshal response '%s': %v", string(body), err)
+        //}
+
+	// 2. get POD annotation MAC/IP/GW/
+	podInfo, _:= GetPodInfo(podReq.PodNamespace, podReq.PodName)
+        podInterfaceInfo := &PodInterfaceInfo{
+                PodAnnotation: *podInfo,
+                MTU:           config.Default.MTU,
+        }
+        //1. get VF netdevice from PCI
+        pciAddrs := "0000:81:00.3"
+	vfNetdevices, err := sriovnet.GetNetDevicesFromPci(pciAddrs)
+        if err != nil {
+                return err
+
+        }
+
+        // Make sure we have 1 netdevice per pci address
+        if len(vfNetdevices) != 1 {
+                return fmt.Errorf("failed to get one netdevice interface per %s", pciAddrs)
+        }
+        vfNetdevice := vfNetdevices[0]	
+	//3a. move to namespace VF
+        netns, err := ns.GetNS(podReq.Netns) 
+        err = moveIfToNetns(vfNetdevice, netns)
+        if err != nil {
+                return err
+        }
+
+        err = netns.Do(func(hostNS ns.NetNS) error {
+                //contIface.Name = ifName
+                err = renameLink(vfNetdevice, podReq.IfName)
+                if err != nil {
+                        return err
+                }
+                link, err := netlink.LinkByName(podReq.IfName)
+                if err != nil {
+                        return err
+                }
+                err = netlink.LinkSetMTU(link, podInterfaceInfo.MTU)
+                if err != nil {
+                        return err
+                }
+                err = netlink.LinkSetUp(link)
+                if err != nil {
+                        return err
+                }
+
+                err = setupNetwork(link, podInterfaceInfo)
+                if err != nil {
+                        return err
+                }
+
+                //contIface.Mac = ifInfo.MAC.String()
+                //contIface.Sandbox = netns.Path()
+
+                return nil
+        })
+
+	// 3.b setup network
+	// set MTU
+
 
 	var result *current.Result
-	if response.Result != nil {
-		result = response.Result
-	} else {
-		pr, _ := cniRequestToPodRequest(req)
-		result = pr.getCNIResult(response.PodIFInfo)
-		if result == nil {
-			return fmt.Errorf("failed to get CNI Result from pod interface info %q", response.PodIFInfo)
-		}
+	//if response.Result != nil {
+	//	result = response.Result
+	//} else {
+	//	pr, _ := cniRequestToPodRequest(req)
+	//	result = pr.getCNIResult(response.PodIFInfo)
+	//	if result == nil {
+	//		return fmt.Errorf("failed to get CNI Result from pod interface info %q", response.PodIFInfo)
+	//	}
+	//}
+	//ipv4, _  := types.ParseCIDR(podInfo.IP)
+	result = &current.Result{
+		CNIVersion: "0.3.1",
+		Interfaces: []*current.Interface{
+			{
+				Name:    "eth0",
+				Mac:     podInfo.MAC.String(),
+				Sandbox: podReq.Netns,
+			},
+		},
+		IPs: []*current.IPConfig{
+			{
+				Version:   "4",
+				Interface: current.Int(0),
+				Address:   *podInfo.IP,
+				Gateway:   net.ParseIP("192.168.0.1"),	
+			},
+		},
+		Routes: []*types.Route{
+		},
+		DNS: types.DNS{
+		},
 	}
-
 	return types.PrintResult(result, conf.CNIVersion)
 }
 
 // CmdDel is the callback for 'teardown' cni calls from skel
 func (p *Plugin) CmdDel(args *skel.CmdArgs) error {
-	_, err := p.doCNI("http://dummy/", newCNIRequest(args))
-	return err
+	// TODO need to release VF and fix it in standart ovs offload
+	////_, err := p.doCNI("http://dummy/", newCNIRequest(args))
+	return nil
 }
 
 // CmdCheck is the callback for 'checking' container's networking is as expected.
