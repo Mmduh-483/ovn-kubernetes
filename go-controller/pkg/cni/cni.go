@@ -96,7 +96,11 @@ func (pr *PodRequest) cmdAdd(kclient kubernetes.Interface) ([]byte, error) {
 	}); err != nil {
 		return nil, fmt.Errorf("failed to get pod annotation: %v", err)
 	}
-
+	// Annotations for BlueField
+	annotations, err = GetPodAnnotations(namespace, podName, false)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get bluefield pod annotation: %v", err)
+	}
 	podInfo, err := util.UnmarshalPodAnnotation(annotations)
 	if err != nil {
 		return nil, fmt.Errorf("failed to unmarshal ovn annotation: %v", err)

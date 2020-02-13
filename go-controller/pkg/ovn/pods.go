@@ -31,7 +31,7 @@ func (oc *Controller) syncPods(pods []interface{}) {
 			continue
 		}
 		annotations, err := util.UnmarshalPodAnnotation(pod.Annotations)
-		if podScheduled(pod) && podWantsNetwork(pod) && err == nil {
+		if PodScheduled(pod) && PodWantsNetwork(pod) && err == nil {
 			logicalPort := podLogicalPortName(pod)
 			expectedLogicalPorts[logicalPort] = true
 			if err = oc.lsManager.AllocateIPs(pod.Spec.NodeName, annotations.IPs); err != nil {
