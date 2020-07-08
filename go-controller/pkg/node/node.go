@@ -2,6 +2,7 @@ package node
 
 import (
 	"fmt"
+	"github.com/ovn-org/ovn-kubernetes/go-controller/pkg/ovn"
 	"io/ioutil"
 	"net"
 	"os"
@@ -9,6 +10,7 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
+	"sync"
 	"time"
 
 	honode "github.com/ovn-org/ovn-kubernetes/go-controller/hybrid-overlay/pkg/controller"
@@ -32,16 +34,18 @@ type OvnNode struct {
 	watchFactory *factory.WatchFactory
 	stopChan     chan struct{}
 	recorder     record.EventRecorder
+	smartNic     bool
 }
 
 // NewNode creates a new controller for node management
-func NewNode(kubeClient kubernetes.Interface, wf *factory.WatchFactory, name string, stopChan chan struct{}, eventRecorder record.EventRecorder) *OvnNode {
+func NewNode(kubeClient kubernetes.Interface, wf *factory.WatchFactory, name string, stopChan chan struct{}, eventRecorder record.EventRecorder, smartNic bool) *OvnNode {
 	return &OvnNode{
 		name:         name,
 		Kube:         &kube.Kube{KClient: kubeClient},
 		watchFactory: wf,
 		stopChan:     stopChan,
 		recorder:     eventRecorder,
+		smartNic:     smartNic,
 	}
 }
 
@@ -279,8 +283,12 @@ func (n *OvnNode) Start() error {
 	}
 
 	// start the cni server
-	cniServer := cni.NewCNIServer("", kclient.KClient)
-	err = cniServer.Start(cni.HandleCNIRequest)
+	if n.smartNic {
+		err = n.watchPods()
+	} else {
+		cniServer := cni.NewCNIServer("", kclient.KClient)
+		err = cniServer.Start(cni.HandleCNIRequest)
+	}
 
 	return err
 }
@@ -341,4 +349,147 @@ func buildEndpointAddressMap(epSubsets []kapi.EndpointSubset) map[epAddressItem]
 	}
 
 	return epMap
+}
+
+//watchPods watch updates for pod smart nic annotations
+func (n *OvnNode) watchPods() error {
+	var retryPods sync.Map
+	// servedPods tracks the pods that got a VF
+	var servedPods sync.Map
+	_, err := n.watchFactory.AddPodHandler(cache.ResourceEventHandlerFuncs{
+		AddFunc: func(obj interface{}) {
+			klog.Infof("AddFunc:")
+			pod := obj.(*kapi.Pod)
+			if !ovn.PodWantsNetwork(pod) || pod.Status.Phase == kapi.PodRunning {
+				return
+			}
+			if ovn.PodScheduled(pod) {
+				// Is this pod created on same node where the smart NIC
+				if n.name != pod.Spec.NodeName {
+					return
+				}
+
+				pfindex, vfindex, ok := n.getSmartNicAnnotations(pod)
+				if !ok {
+					retryPods.Store(pod.UID, true)
+					return
+				}
+				// get POD annotation MAC/IP/GW/
+				podInfo, err := util.UnmarshalPodAnnotation(pod.Annotations)
+				if err != nil {
+					retryPods.Store(pod.UID, true)
+					return
+				}
+				err = n.addRepPort(pod, pfindex, vfindex, podInfo)
+				if err != nil {
+					retryPods.Store(pod.UID, true)
+				} else {
+					servedPods.Store(pod.UID, true)
+				}
+			} else {
+				// Handle unscheduled pods later in UpdateFunc
+				retryPods.Store(pod.UID, true)
+				return
+			}
+		},
+		UpdateFunc: func(old, newer interface{}) {
+			klog.Infof("UpdateFunc:")
+			pod := newer.(*kapi.Pod)
+			if !ovn.PodWantsNetwork(pod) || pod.Status.Phase == kapi.PodRunning {
+				retryPods.Delete(pod.UID)
+				return
+			}
+			_, retry := retryPods.Load(pod.UID)
+			if ovn.PodScheduled(pod) && retry {
+				if n.name != pod.Spec.NodeName {
+					retryPods.Delete(pod.UID)
+					return
+				}
+				pfindex, vfindex, ok := n.getSmartNicAnnotations(pod)
+				if !ok {
+					retryPods.Store(pod.UID, true)
+					return
+				}
+				// get POD annotation MAC/IP/GW/
+				podInfo, err := util.UnmarshalPodAnnotation(pod.Annotations)
+				if err != nil {
+					retryPods.Store(pod.UID, true)
+					return
+				}
+				err = n.addRepPort(pod, pfindex, vfindex, podInfo)
+				if err != nil {
+					retryPods.Store(pod.UID, true)
+				} else {
+					servedPods.Store(pod.UID, true)
+					retryPods.Delete(pod.UID)
+				}
+			}
+		},
+		DeleteFunc: func(obj interface{}) {
+			klog.Infof("DeleteFunc:")
+			pod := obj.(*kapi.Pod)
+			if _, ok := servedPods.Load(pod.UID); !ok {
+				return
+			}
+			servedPods.Delete(pod.UID)
+			pfIndex, vfIndex, ok := n.getSmartNicAnnotations(pod)
+			if !ok {
+				return
+			}
+			_ = n.delRepPort(pod, pfIndex, vfIndex)
+		},
+	}, nil)
+	return err
+}
+
+// getSmartNicAnnotations return the smart nic annotation which inclue the PF and VF indexes
+func (n *OvnNode) getSmartNicAnnotations(pod *kapi.Pod) (string, string, bool) {
+	pfIndex, ok1 := pod.Annotations["ovn.smartnic.pf"]
+	vfIndex, ok2 := pod.Annotations["ovn.smartnic.vf"]
+	isFound := ok1 && ok2
+	return pfIndex, vfIndex, isFound
+}
+
+// addRepPort adds the representor of the VF to the ovs bridge
+func (n *OvnNode) addRepPort(pod *kapi.Pod, pfindex, vfindex string, ifInfo *util.PodAnnotation) error {
+	return wait.PollImmediate(500*time.Millisecond, 60*time.Second, func() (bool, error) {
+		portName := fmt.Sprintf("pf%svf%s", pfindex, vfindex)
+		ifaceID := fmt.Sprintf("%s_%s", pod.Namespace, pod.Name)
+		ipStrs := make([]string, len(ifInfo.IPs))
+		for i, ip := range ifInfo.IPs {
+			ipStrs[i] = ip.String()
+		}
+		ovsArgs := []string{
+			"--may-exist", "add-port", "br-int", portName, "--", "set",
+			"interface", portName,
+			fmt.Sprintf("external_ids:attached_mac=%s", ifInfo.MAC),
+			fmt.Sprintf("external_ids:iface-id=%s", ifaceID),
+			fmt.Sprintf("external_ids:ip_addresses=%s", strings.Join(ipStrs, ",")),
+			fmt.Sprintf("external_ids:sandbox=%s", pod.Annotations["sandbox"]),
+		}
+		_, _, err := util.RunOVSVsctl(ovsArgs...)
+		if err != nil {
+			return false, nil
+		}
+		klog.Infof("Port %s added to bridge br-int", portName)
+		err = n.Kube.SetAnnotationsOnPod(pod.Namespace, pod.Name, map[string]string{"vf_rep_ready": "True"})
+		if err != nil {
+			klog.Infof("Failed to set annotations on pod %s error: %v", pod.Name, err)
+			return false, nil
+		}
+		return true, nil
+	})
+}
+
+// delRepPort delete the representor of the VF from the ovs bridge
+func (n *OvnNode) delRepPort(pod *kapi.Pod, pfindex, vfindex string) error {
+	return wait.PollImmediate(500*time.Millisecond, 60*time.Second, func() (bool, error) {
+		portName := fmt.Sprintf("pf%svf%s", pfindex, vfindex)
+		_, _, err := util.RunOVSVsctl("--if-exists", "del-port", "br-int", portName)
+		if err != nil {
+			return false, nil
+		}
+		klog.Infof("Port %s deleted from bridge br-int", portName)
+		return true, nil
+	})
 }
