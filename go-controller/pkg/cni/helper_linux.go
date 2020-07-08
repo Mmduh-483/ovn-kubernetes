@@ -143,41 +143,59 @@ func setupSriovInterface(netns ns.NetNS, containerID, ifName string, ifInfo *Pod
 	}
 	vfNetdevice := vfNetdevices[0]
 
-	// 2. get Uplink netdevice
-	uplink, err := sriovnet.GetUplinkRepresentor(pciAddrs)
-	if err != nil {
-		return nil, nil, err
-	}
-
-	// 3. get VF index from PCI
+	// 2. get VF index from PCI
 	vfIndex, err := sriovnet.GetVfIndexByPciAddress(pciAddrs)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	// 4. lookup representor
-	rep, err := sriovnet.GetVfRepresentor(uplink, vfIndex)
-	if err != nil {
-		return nil, nil, err
-	}
-	oldHostRepName := rep
+	if !ifInfo.IsSmartNic {
 
-	// 5. rename the host VF representor
-	hostIface.Name = containerID[:15]
-	if err = renameLink(oldHostRepName, hostIface.Name); err != nil {
-		return nil, nil, fmt.Errorf("failed to rename %s to %s: %v", oldHostRepName, hostIface.Name, err)
-	}
-	link, err := netlink.LinkByName(hostIface.Name)
-	if err != nil {
-		return nil, nil, err
-	}
-	hostIface.Mac = link.Attrs().HardwareAddr.String()
+		// 3. get Uplink netdevice
+		uplink, err := sriovnet.GetUplinkRepresentor(pciAddrs)
+		if err != nil {
+			return nil, nil, err
+		}
 
-	// 6. set MTU on VF representor
-	if err = netlink.LinkSetMTU(link, ifInfo.MTU); err != nil {
-		return nil, nil, fmt.Errorf("failed to set MTU on %s: %v", hostIface.Name, err)
+		// 4. lookup representor
+		rep, err := sriovnet.GetVfRepresentor(uplink, vfIndex)
+		if err != nil {
+			return nil, nil, err
+		}
+		oldHostRepName := rep
+
+		// 5. rename the host VF representor
+		hostIface.Name = containerID[:15]
+		if err = renameLink(oldHostRepName, hostIface.Name); err != nil {
+			return nil, nil, fmt.Errorf("failed to rename %s to %s: %v", oldHostRepName, hostIface.Name, err)
+		}
+		rep_link, err := netlink.LinkByName(hostIface.Name)
+		if err != nil {
+			return nil, nil, err
+		}
+		hostIface.Mac = rep_link.Attrs().HardwareAddr.String()
+
+		// 6. set MTU on VF representor
+		if err = netlink.LinkSetMTU(rep_link, ifInfo.MTU); err != nil {
+			return nil, nil, fmt.Errorf("failed to set MTU on %s: %v", hostIface.Name, err)
+		}
 	}
 
+	//@TODO need to check why it failed on BF (it probeley need to be with TC)
+	/*
+		physlink, err := netlink.LinkByName(netdevice)
+		if err != nil {
+			return nil, nil, fmt.Errorf("failed getting link for %s: %v", netdevice, err)
+		}
+
+		// 7. Clean up any left over bandwidth configuration, before proceeding.
+		// Probably put this in a function that cleans up/resets other configs too.
+
+		err = netlink.LinkSetVfTxRate(physlink, vfIndex, 0)
+		if err != nil {
+			klog.Infof("Failed to clean up bandwidth on %s (%s/%d): %v", pciAddrs, physlink, vfIndex, err)
+		}
+	*/
 	// 7. Move VF to Container namespace
 	err = moveIfToNetns(vfNetdevice, netns)
 	if err != nil {
@@ -190,7 +208,7 @@ func setupSriovInterface(netns ns.NetNS, containerID, ifName string, ifInfo *Pod
 		if err != nil {
 			return err
 		}
-		link, err = netlink.LinkByName(contIface.Name)
+		link, err := netlink.LinkByName(contIface.Name)
 		if err != nil {
 			return err
 		}
@@ -260,6 +278,9 @@ func (pr *PodRequest) ConfigureInterface(namespace string, podName string, ifInf
 		ipStrs[i] = ip.String()
 	}
 
+	if ifInfo.IsSmartNic {
+		return []*current.Interface{hostIface, contIface}, nil
+	}
 	// Add the new sandbox's OVS port
 	ovsArgs := []string{
 		"add-port", "br-int", hostIface.Name, "--", "set",
