@@ -29,6 +29,7 @@ fi
 #    display        Displays log files
 #    display_env    Displays environment variables
 #    ovn_debug      Displays ovn/ovs configuration and flows
+#    smart-nic-cni  Add smart nic cni to host
 
 # NOTE: The script/image must be compatible with the daemonset.
 # This script supports version 3 daemonsets
@@ -173,6 +174,11 @@ ovn_hybrid_overlay_enable=${OVN_HYBRID_OVERLAY_ENABLE:-}
 ovn_hybrid_overlay_net_cidr=${OVN_HYBRID_OVERLAY_NET_CIDR:-}
 #OVN_REMOTE_PROBE_INTERVAL - ovn remote probe interval in ms (default 100000)
 ovn_remote_probe_interval=${OVN_REMOTE_PROBE_INTERVAL:-100000}
+
+# SMART_NIC - is the worker node a smart nic card
+smart_nic=${SMART_NIC:-}
+# SMART_NIC_IP - IP on the smart nic which can reach the master ovndb to be used
+smart_nic_ip=${SMART_NIC_IP:-}
 
 # Determine the ovn rundir.
 if [[ -f /usr/bin/ovn-appctl ]]; then
@@ -624,6 +630,8 @@ nb-ovsdb() {
   trap 'ovsdb_cleanup nb' TERM
   check_ovn_daemonset_version "3"
   rm -f ${OVN_RUNDIR}/ovnnb_db.pid
+  # Clean old nb-ovndb
+  rm -f ${OVN_ETCDIR}/ovnnb_db.db
 
   if [[ ${ovn_db_host} == "" ]]; then
     echo "The IP address of the host $(hostname) could not be determined. Exiting..."
@@ -658,6 +666,8 @@ sb-ovsdb() {
   trap 'ovsdb_cleanup sb' TERM
   check_ovn_daemonset_version "3"
   rm -f ${OVN_RUNDIR}/ovnsb_db.pid
+  # Clean old sb-ovndb
+  rm -f ${OVN_ETCDIR}/ovnsb_db.db
 
   if [[ ${ovn_db_host} == "" ]]; then
     echo "The IP address of the host $(hostname) could not be determined. Exiting..."
@@ -866,6 +876,16 @@ ovn-node() {
     fi
   fi
 
+  smart_nic_flag=
+  if [[ ${smart_nic} == "true" ]]; then
+    if [[ ${smart_nic_ip} == "" ]]; then
+      echo "The IP address of the smart nic is needed. Exiting..."
+      exit 1
+    fi
+    smart_nic_flag="--smart-nic"
+    ovs-vsctl set Open_vSwitch . external_ids:ovn-encap-ip=${smart_nic_ip}
+  fi
+
   OVN_ENCAP_IP=""
   ovn_encap_ip=$(ovs-vsctl --if-exists get Open_vSwitch . external_ids:ovn-encap-ip)
   if [[ $? == 0 ]]; then
@@ -900,6 +920,7 @@ ovn-node() {
     --logfile-maxbackups=${ovnkube_logfile_maxbackups} \
     --logfile-maxage=${ovnkube_logfile_maxage} \
     ${hybrid_overlay_flags} \
+    ${smart_nic_flag} \
     --gateway-mode=${ovn_gateway_mode} ${ovn_gateway_opts} \
     --pidfile ${OVN_RUNDIR}/ovnkube.pid \
     --logfile /var/log/ovn-kubernetes/ovnkube.log \
@@ -908,7 +929,9 @@ ovn-node() {
     --metrics-bind-address "0.0.0.0:9410" &
 
   wait_for_event attempts=3 process_ready ovnkube
-  setup_cni
+  if [[ ${smart_nic} != "true" ]]; then
+      setup_cni
+  fi
   echo "=============== ovn-node ========== running"
 
   process_healthy ovnkube
@@ -982,6 +1005,15 @@ ovs-metrics() {
 
   echo "=============== ovs-metrics with pid ${?} terminated ========== "
   exit 1
+}
+
+# Add smart nic cni to host
+smart-nic-cni() {
+  echo "=============== smart-nic-cni"
+  cp -f /usr/libexec/cni/ovn-k8s-cni-smart-nic /opt/cni/bin/ovn-k8s-cni-smart-nic
+  echo '{"cniVersion":"0.4.0","name":"ovn-kubernetes","type":"ovn-k8s-cni-smart-nic","ipam":{},"dns":{}}' > \
+    /etc/cni/net.d/10-ovn-k8s-cni-smart-nic.conf
+  sleep infinity
 }
 
 echo "================== ovnkube.sh --- version: ${ovnkube_version} ================"
@@ -1060,6 +1092,9 @@ case ${cmd} in
   ;;
 "ovs-metrics")
   ovs-metrics
+  ;;
+"smart-nic-cni")
+  smart-nic-cni
   ;;
 *)
   echo "invalid command ${cmd}"
